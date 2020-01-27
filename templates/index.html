@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flot Examples: Real-time updates</title>
+    <link href="{% static 'css/examples.css' %}" rel="stylesheet" type="text/css">
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.canvaswrapper.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.colorhelpers.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.saturated.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.browser.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.drawSeries.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.uiConstants.js' %}"></script>
+	<script type="text/javascript">
+
+	$(function() {
+
+		var data = [],
+			totalPoints = 300;
+
+		var updateInterval = 3000;
+
+
+		function startData() {
+			var res = [[10,10],[20,20],[20,20]]
+			return res;
+		}
+
+		var plot = $.plot("#placeholder", [startData()], {
+			series: {
+                shadowSize: 0	// Drawing is faster without shadows
+			},
+			yaxis: {
+				autoScale: "none",
+				ticks: 1,
+				min: 0,
+				max: 100
+			},
+			xaxis: {
+				autoScale: "none",
+				ticks: 1,
+				min: 0,
+				max: 12
+			}
+		});
+
+		function update() {
+			function plot_update(series) {
+				data = [ series ];
+				plot.setData(data);
+			}
+			$.ajax({
+				url: "dataurl",
+				type: "GET",
+				dataType: "json",
+				success: plot_update
+			});
+			plot.draw();
+			setTimeout(update, updateInterval);
+		}
+
+		update();
+		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+	});
+
+	</script>
+</head>
+<body>
+	<div id="header">
+		<h2>Real-time updates</h2>
+	</div>
+
+	<div id="content">
+
+		<div class="demo-container">
+			<div id="placeholder" class="demo-placeholder"></div>
+		</div>
+
+		<p>You can update a chart periodically to get a real-time effect by using a timer to insert the new data in the plot and redraw it.</p>
+
+		<p>Time between updates: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> milliseconds</p>
+
+	</div>
+
+</body>
+</html>
