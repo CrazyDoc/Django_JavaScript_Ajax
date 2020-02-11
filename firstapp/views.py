@@ -6,7 +6,7 @@ def index(request):
     return render(request, "index.html")
 
 def Data():
-	with open("C:\\Users\\AAAAAA\\some.txt", 'rb') as filehandle:
+	with open("/tmp/some.txt", 'rb') as filehandle:
 		pagesets = pickle.load(filehandle)
 	filehandle.close()
 	return(pagesets)

@@ -23,12 +23,12 @@
 		var updateInterval = 3000;
 
 
-		function startData() {
+		function getAjax() {
 			var res = [[10,10],[20,20],[20,20]]
 			return res;
 		}
 
-		var plot = $.plot("#placeholder", [startData()], {
+		var plot = $.plot("#placeholder", [getAjax()], {
 			series: {
                 shadowSize: 0	// Drawing is faster without shadows
 			},
@@ -36,7 +36,7 @@
 				autoScale: "none",
 				ticks: 1,
 				min: 0,
-				max: 100
+				max: 101
 			},
 			xaxis: {
 				autoScale: "none",
@@ -69,7 +69,7 @@
 </head>
 <body>
 	<div id="header">
-		<h2>Real-time updates</h2>
+		<h2>SYS6 PageSet #2</h2>
 	</div>
 
 	<div id="content">
@@ -77,10 +77,6 @@
 		<div class="demo-container">
 			<div id="placeholder" class="demo-placeholder"></div>
 		</div>
-
-		<p>You can update a chart periodically to get a real-time effect by using a timer to insert the new data in the plot and redraw it.</p>
-
-		<p>Time between updates: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> milliseconds</p>
 
 	</div>
 
