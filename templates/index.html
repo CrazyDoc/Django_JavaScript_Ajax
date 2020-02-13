@@ -51,10 +51,12 @@
 
 			if (data.length > 0) {
 				var plot = $.plot("#placeholder", data, {
-					series: { shadowSize: 0 },
+					series: { points: { show: false },
+								lines: { lineWidth: 3, steps: true },
+					 			shadowSize: 0 },
 					legend: { show: true },
 					yaxis: { autoScale: "none", min: 0, max: 101 },
-					xaxis: { mode: "time", timezone: "browser" }
+					xaxis: { mode: "time", timezone: "browser", growOnly: true }
 				});
 			}
 			return plot;
