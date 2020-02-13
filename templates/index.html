@@ -21,13 +21,7 @@
 
 		var updateInterval = 3000;
 
-		var datasets = {'PS0': {'label': 'PS0', 'data': []},
-						'PS1': {'label': 'PS1', 'data': []},
-						'PS2': {'label': 'PS2', 'data': []},
-						'PS3': {'label': 'PS3', 'data': []},
-						'PS4': {'label': 'PS4', 'data': []},
-						'PS5': {'label': 'PS5', 'data': []},
-						'PS6': {'label': 'PS6', 'data': []}}
+		var datasets = {'PS0': {'label': 'PS0', 'data': []}}
 		var i = 0;
 		$.each(datasets, function(key, val) {
 			val.color = i;
@@ -68,6 +62,15 @@
 
 		function update() {
 			function plot_update(series) {
+
+				$.each(series, function(key, val) {
+					if (document.getElementById("id" + key) == null) {
+						choiceContainer.append("<br/><input type='checkbox' name='" + key +
+							"' checked='checked' id='id" + key + "'></input>" +
+							"<label for='id" + key + "'>"
+							+ val.label + "</label>");
+					}
+				});
 
 				plotAccordingToChoices(series);
 			}
