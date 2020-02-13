@@ -13,43 +13,63 @@
 	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.browser.js' %}"></script>
 	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.drawSeries.js' %}"></script>
 	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.uiConstants.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.legend.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.flot.time.js' %}"></script>
 	<script type="text/javascript">
 
 	$(function() {
 
-		var data = [],
-			totalPoints = 300;
-
 		var updateInterval = 3000;
 
-
-		function getAjax() {
-			var res = [[10,10],[20,20],[20,20]]
-			return res;
-		}
-
-		var plot = $.plot("#placeholder", [getAjax()], {
-			series: {
-                shadowSize: 0	// Drawing is faster without shadows
-			},
-			yaxis: {
-				autoScale: "none",
-				ticks: 1,
-				min: 0,
-				max: 101
-			},
-			xaxis: {
-				autoScale: "none",
-				ticks: 1,
-				min: 0,
-				max: 12
-			}
+		var datasets = {'PS0': {'label': 'PS0', 'data': []},
+						'PS1': {'label': 'PS1', 'data': []},
+						'PS2': {'label': 'PS2', 'data': []},
+						'PS3': {'label': 'PS3', 'data': []},
+						'PS4': {'label': 'PS4', 'data': []},
+						'PS5': {'label': 'PS5', 'data': []},
+						'PS6': {'label': 'PS6', 'data': []}}
+		var i = 0;
+		$.each(datasets, function(key, val) {
+			val.color = i;
+			++i;
 		});
+
+		var choiceContainer = $("#choices");
+		$.each(datasets, function(key, val) {
+			choiceContainer.append("<br/><input type='checkbox' name='" + key +
+				"' checked='checked' id='id" + key + "'></input>" +
+				"<label for='id" + key + "'>"
+				+ val.label + "</label>");
+		});
+
+		choiceContainer.find("input").click(plotAccordingToChoices);
+
+		function plotAccordingToChoices(datas) {
+
+			var data = [];
+
+			choiceContainer.find("input:checked").each(function () {
+				var key = $(this).attr("name");
+				if (key && datas[key]) {
+					data.push(datas[key]);
+				}
+			});
+
+			if (data.length > 0) {
+				var plot = $.plot("#placeholder", data, {
+					series: { shadowSize: 0 },
+					legend: { show: true },
+					yaxis: { autoScale: "none", min: 0, max: 101 },
+					xaxis: { mode: "time", timezone: "browser" }
+				});
+			}
+			return plot;
+		}
 
 		function update() {
 			function plot_update(series) {
-				data = [ series ];
-				plot.setData(data);
+
+				plotAccordingToChoices(series);
 			}
 			$.ajax({
 				url: "dataurl",
@@ -57,25 +77,24 @@
 				dataType: "json",
 				success: plot_update
 			});
-			plot.draw();
 			setTimeout(update, updateInterval);
 		}
-
 		update();
-		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+
 	});
 
 	</script>
 </head>
 <body>
 	<div id="header">
-		<h2>SYS6 PageSet #2</h2>
+		<h2>SYS6 PageSets</h2>
 	</div>
 
 	<div id="content">
 
 		<div class="demo-container">
-			<div id="placeholder" class="demo-placeholder"></div>
+			<div id="placeholder" class="demo-placeholder" style="float:left; width:675px;"></div>
+			<p id="choices" style="float:right; width:135px;"></p>
 		</div>
 
 	</div>

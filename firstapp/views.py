@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 import pickle
  
@@ -12,4 +11,4 @@ def Data():
 	return(pagesets)
 
 def AjaxData(request):
-	return JsonResponse({"data": Data()})
+	return JsonResponse(Data())
