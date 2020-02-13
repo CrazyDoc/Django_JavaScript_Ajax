@@ -5,4 +5,4 @@ JS and an example of the graph is taken here: https://github.com/flot/flot.
 This repository was created as an extension to https://github.com/CrazyDoc/MQ-Manager-Monitor
 
 Result:
-![Result](Result.png?raw=true "Result")
+![Scheme](Result.png?raw=true "Scheme")
