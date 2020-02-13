@@ -28,6 +28,8 @@
 			++i;
 		});
 
+		var legendContainer = $("#legend");
+
 		var choiceContainer = $("#choices");
 		$.each(datasets, function(key, val) {
 			choiceContainer.append("<br/><input type='checkbox' name='" + key +
@@ -51,12 +53,12 @@
 
 			if (data.length > 0) {
 				var plot = $.plot("#placeholder", data, {
-					series: { points: { show: false },
-								lines: { lineWidth: 3, steps: true },
+					series: { 	points: 	{ show: false },
+								lines: 		{ lineWidth: 3, steps: true },
 					 			shadowSize: 0 },
-					legend: { show: true },
-					yaxis: { autoScale: "none", min: 0, max: 101 },
-					xaxis: { mode: "time", timezone: "browser", growOnly: true }
+					legend: { show: true, position: 'sw', margin: -10 },
+					yaxis: 	{ autoScale: "none", min: 0, max: 101 },
+					xaxis: 	{ mode: "time", timezone: "browser", growOnly: true }
 				});
 			}
 			return plot;
