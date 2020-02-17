@@ -19,24 +19,27 @@
 
 	$(function() {
 
-		var updateInterval = 3000;
+		var updateInterval = 1000;
 
 		var datasets = {'PS0': {'label': 'PS0', 'data': []}}
+
 		var i = 0;
+
 		$.each(datasets, function(key, val) {
 			val.color = i;
 			++i;
 		});
 
+		var date = '';
+		$("#date").val(date).change(function () {
+			date = $(this).val();
+		});
+
 		var legendContainer = $("#legend");
 
 		var choiceContainer = $("#choices");
-		$.each(datasets, function(key, val) {
-			choiceContainer.append("<br/><input type='checkbox' name='" + key +
-				"' checked='checked' id='id" + key + "'></input>" +
-				"<label for='id" + key + "'>"
-				+ val.label + "</label>");
-		});
+
+		var dateCheker = $("#datecheker");
 
 		choiceContainer.find("input").click(plotAccordingToChoices);
 
@@ -65,8 +68,8 @@
 		}
 
 		function update() {
-			function plot_update(series) {
 
+			function plot_update(series) {
 				$.each(series, function(key, val) {
 					if (document.getElementById("id" + key) == null) {
 						choiceContainer.append("<br/><input type='checkbox' name='" + key +
@@ -75,15 +78,33 @@
 							+ val.label + "</label>");
 					}
 				});
-
 				plotAccordingToChoices(series);
 			}
-			$.ajax({
-				url: "dataurl",
-				type: "GET",
-				dataType: "json",
-				success: plot_update
-			});
+
+			if (document.getElementById('datecheker').checked) {
+
+
+
+				var myDate=date;
+				myDate=myDate.split(".");
+				var newDate=myDate[1]+"/"+myDate[0]+"/"+myDate[2];
+				var dateurl = 'dateurl/ps'+Math.ceil((new Date(newDate).getTime())/86400000)
+
+				$.ajax({
+					url: dateurl,
+					type: "GET",
+					dataType: "json",
+					success: plot_update
+				});
+			} else {
+				$.ajax({
+					url: "dataurl",
+					type: "GET",
+					dataType: "json",
+					success: plot_update
+				});
+			}
+
 			setTimeout(update, updateInterval);
 		}
 		update();
@@ -103,6 +124,9 @@
 			<div id="placeholder" class="demo-placeholder" style="float:left; width:675px;"></div>
 			<p id="choices" style="float:right; width:135px;"></p>
 		</div>
+
+		<p><input id="datecheker" type="checkbox" name ="datecheker" style="float:left; width:1em;"></p>
+		<p>Date: <input id="date" type="text" value="" style="text-align: right; width:7em"> (format 'DD.MM.YYYY')</p>
 
 	</div>
 
