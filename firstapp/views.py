@@ -13,7 +13,7 @@ def Data():
 	return(pagesets)
 
 def DateData(request, table_name):
-	con = sqlib.connection('/opt/sqlite3/***')
+	con = sqlib.connection('/sqlite3/sqlite3')
 	datedata = {}
 	for i in sqlib.listing_rows(con, table_name):
 		PS = i[1]
