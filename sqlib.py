@@ -45,12 +45,16 @@ def insert(con, table_name, data):
 def listing_rows(con, table_name):
 	listing_row = []
 	cursorObj = con.cursor()
-	if cursorObj.execute('SELECT * FROM ' + table_name) == 0:
-		print('have no table')
-	else:
-		for string in cursorObj:
-			listing_row.append(string)
-	return(listing_row)
+	try:
+		if not cursorObj.execute('SELECT * FROM ' + table_name):
+			print('have no table')
+			return([])
+		else:
+			for string in cursorObj:
+				listing_row.append(string)
+		return(listing_row)
+	except:
+		return([])
 
 
 def del_table(con, table_name):

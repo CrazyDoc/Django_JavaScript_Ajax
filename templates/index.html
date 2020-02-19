@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Flot Examples: Real-time updates</title>
-    <link href="{% static 'css/examples.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/examples.css' %}" rel="stylesheet" type="text/css">
 	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.canvaswrapper.js' %}"></script>
 	<script language="javascript" type="text/javascript" src="{% static 'js/jquery.colorhelpers.js' %}"></script>
@@ -30,9 +30,14 @@
 			++i;
 		});
 
-		var date = '';
-		$("#date").val(date).change(function () {
-			date = $(this).val();
+		var startdate = '';
+		$("#startdate").val(startdate).change(function () {
+			startdate = $(this).val();
+		});
+
+		var stopdate = '';
+		$("#stopdate").val(stopdate).change(function () {
+			stopdate = $(this).val();
 		});
 
 		var legendContainer = $("#legend");
@@ -57,7 +62,7 @@
 			if (data.length > 0) {
 				var plot = $.plot("#placeholder", data, {
 					series: { 	points: 	{ show: false },
-								lines: 		{ lineWidth: 3, steps: true },
+								lines: 		{ lineWidth: 3 },
 					 			shadowSize: 0 },
 					legend: { show: true, position: 'sw', margin: -10 },
 					yaxis: 	{ autoScale: "none", min: 0, max: 101 },
@@ -83,12 +88,15 @@
 
 			if (document.getElementById('datecheker').checked) {
 
+				var sDate=startdate;
+				sDate=sDate.split(".");
+				var sDate=sDate[1]+"/"+sDate[0]+"/"+sDate[2];
 
+				var pDate=stopdate;
+				pDate=pDate.split(".");
+				var pDate=pDate[1]+"/"+pDate[0]+"/"+pDate[2];
 
-				var myDate=date;
-				myDate=myDate.split(".");
-				var newDate=myDate[1]+"/"+myDate[0]+"/"+myDate[2];
-				var dateurl = 'dateurl/ps'+Math.ceil((new Date(newDate).getTime())/86400000)
+				var dateurl = 'dateurl/ps'+Math.ceil((new Date(sDate).getTime())/86400000)+'-'+Math.ceil((new Date(pDate).getTime())/86400000)
 
 				$.ajax({
 					url: dateurl,
@@ -115,7 +123,7 @@
 </head>
 <body>
 	<div id="header">
-		<h2>SYS6 PageSets</h2>
+		<h2>Free % PageSets</h2>
 	</div>
 
 	<div id="content">
@@ -126,7 +134,8 @@
 		</div>
 
 		<p><input id="datecheker" type="checkbox" name ="datecheker" style="float:left; width:1em;"></p>
-		<p>Date: <input id="date" type="text" value="" style="text-align: right; width:7em"> (format 'DD.MM.YYYY')</p>
+		<p>startDate: <input id="startdate" type="text" value="" style="text-align: right; width:7em"> (format 'DD.MM.YYYY')</p>
+		<p>stopDate: <input id="stopdate" type="text" value="" style="text-align: right; width:7em"> (format 'DD.MM.YYYY')</p>
 
 	</div>
 

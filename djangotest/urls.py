@@ -5,5 +5,5 @@ from firstapp import views
 urlpatterns = [
     path('', views.index),
     path('dataurl', views.AjaxData),
-    path('dateurl/<str:table_name>', views.DateData)
+    path('dateurl/ps<str:dateinterval>', views.DateData)
 ]

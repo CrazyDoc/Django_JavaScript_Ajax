@@ -34,7 +34,7 @@ input {
 }
 
 input[type=checkbox] {
-	margin: 7px;
+	margin: 70px;
 }
 
 #header {
@@ -56,6 +56,13 @@ input[type=checkbox] {
 	width: 880px;
 	margin: 0 auto;
 	padding: 10px;
+}
+
+.settings {
+	width: 880px;
+	margin: 0 auto;
+	padding: 10px;
+	color: red;
 }
 
 #footer {
@@ -144,3 +151,5 @@ input[type="radio"] {
 .tickLabel {
 	line-height: 1.1;
 }
+
+
