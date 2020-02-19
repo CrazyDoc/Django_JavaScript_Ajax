@@ -1,9 +1,6 @@
 import sqlite3
 from sqlite3 import Error
 import time
-import os
-os.environ["SETTINGS_MODULE"] = 'settings'
-from python_settings import settings
 
 table_name = 'ps' + str(int(int(time.time()) / 86400))
 
@@ -79,7 +76,7 @@ def drop_table(con, table_name):
 
 #listing_table(con)
 
-#listing_rows(con)
+#print(listing_rows(con, table_name))
 
 #insert(con, table_name, [('PS0', int(time.time()), int(80))])
 
